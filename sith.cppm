@@ -33,14 +33,23 @@ export class thread {
 protected:
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
 
-  void start() { m_nth = sith_create(this, &thread::callback); }
   virtual void run() = 0;
 
 public:
-  thread() { start(); }
+  thread(bool should_start = true) {
+    if (should_start)
+      start();
+  }
   virtual ~thread() noexcept {
     m_interrupted = true;
-    sith_destroy(m_nth);
+
+    if (m_nth != nullptr)
+      sith_destroy(m_nth);
+  }
+
+  void start() {
+    if (m_nth == nullptr)
+      m_nth = sith_create(this, &thread::callback);
   }
 };
 } // namespace sith
