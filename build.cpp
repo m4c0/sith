@@ -8,5 +8,6 @@ int main(int argc, char **argv) {
   poc->add_wsdep("silog", silog());
   poc->add_ref(sith());
   poc->add_unit<>("poc");
+  poc->add_requirement(native);
   return run_main(poc, argc, argv);
 }
