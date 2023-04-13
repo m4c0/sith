@@ -47,9 +47,29 @@ public:
       sith_destroy(m_nth);
   }
 
+  thread(const thread &) = delete;
+  thread &operator=(const thread &) = delete;
+
+  thread(thread &&o) : m_nth{o.m_nth}, m_interrupted{o.m_interrupted} {
+    o.m_nth = nullptr;
+  }
+  thread &operator=(thread &&o) {
+    stop();
+    m_nth = o.m_nth;
+    m_interrupted = o.m_interrupted;
+    o.m_nth = nullptr;
+    return *this;
+  }
+
   void start() {
     if (m_nth == nullptr)
       m_nth = sith_create(this, &thread::callback);
+  }
+  void stop() {
+    if (m_nth != nullptr) {
+      sith_destroy(m_nth);
+      m_nth = nullptr;
+    }
   }
 };
 } // namespace sith
