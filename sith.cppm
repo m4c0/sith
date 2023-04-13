@@ -10,22 +10,27 @@ void *operator new[](traits::size_t count) { return malloc(count); }
 void operator delete(void *ptr) noexcept { return free(ptr); }
 void operator delete[](void *ptr) noexcept { return free(ptr); }
 
+extern "C" void *sith_create(void *data, void (*fn)(void *));
+extern "C" void sith_destroy(void *nth);
+
 namespace sith {
 export class thread {
   volatile bool m_interrupted{};
+  void *m_nth{};
 
-  void interrupt() noexcept;
+  static void callback(void *self) { static_cast<thread *>(self)->run(); }
 
 protected:
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
 
+  void start() { m_nth = sith_create(this, &thread::callback); }
   virtual void run() = 0;
 
 public:
-  thread();
+  thread() { start(); }
   virtual ~thread() noexcept {
     m_interrupted = true;
-    interrupt();
+    sith_destroy(m_nth);
   }
 };
 } // namespace sith
