@@ -1,4 +1,5 @@
 export module sith;
+import silog;
 import traits;
 
 // This is only needed until clang fixes a linking bug. Without these, anything
@@ -18,7 +19,16 @@ export class thread {
   volatile bool m_interrupted{};
   void *m_nth{};
 
-  static void callback(void *self) { static_cast<thread *>(self)->run(); }
+  static void callback(void *self) {
+    try {
+      silog::log(silog::info, "Background thread started");
+      static_cast<thread *>(self)->run();
+      silog::log(silog::info, "Background thread ended");
+    } catch (...) {
+      // Just a catch-all. Users should implement their own error handling
+      silog::log(silog::error, "Unexpected failure in background thread");
+    }
+  }
 
 protected:
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
