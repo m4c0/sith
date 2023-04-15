@@ -40,12 +40,7 @@ public:
     if (should_start)
       start();
   }
-  virtual ~thread() noexcept {
-    m_interrupted = true;
-
-    if (m_nth != nullptr)
-      sith_destroy(m_nth);
-  }
+  virtual ~thread() noexcept { stop(); }
 
   thread(const thread &) = delete;
   thread &operator=(const thread &) = delete;
@@ -66,6 +61,7 @@ public:
       m_nth = sith_create(this, &thread::callback);
   }
   void stop() {
+    m_interrupted = true;
     if (m_nth != nullptr) {
       sith_destroy(m_nth);
       m_nth = nullptr;
