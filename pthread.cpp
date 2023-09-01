@@ -1,5 +1,8 @@
+module;
 #include <pthread.h>
 #include <stdlib.h>
+
+module sith;
 
 struct wrap {
   void (*fn)(void *);

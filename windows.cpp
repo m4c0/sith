@@ -1,4 +1,7 @@
+module;
 #include <windows.h>
+
+module sith;
 
 struct wrap {
   void (*fn)(void *);

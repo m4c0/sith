@@ -2,6 +2,16 @@ export module sith;
 import silog;
 import traits;
 
+#if __APPLE__
+#pragma ecow add_impl pthread
+#elif __ANDROID__
+#pragma ecow add_impl pthread
+#elif _WIN32
+#pragma ecow add_impl windows
+#else
+#error unsupported
+#endif
+
 extern "C" void *sith_create(void *data, void (*fn)(void *));
 extern "C" void sith_destroy(void *nth);
 

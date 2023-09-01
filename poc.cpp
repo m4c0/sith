@@ -6,7 +6,7 @@ class thread : public sith::thread {
 
   void run() override {
     while (!interrupted()) {
-      silog::log(silog::info, msg);
+      silog::log(silog::info, "%s", msg);
     }
   }
 
