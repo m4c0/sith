@@ -12,9 +12,6 @@ import traits;
 #error unsupported
 #endif
 
-extern "C" void *sith_create(void *data, void (*fn)(void *));
-extern "C" void sith_destroy(void *nth);
-
 namespace sith {
 export class thread {
   volatile bool m_interrupted{};
@@ -30,6 +27,9 @@ export class thread {
       silog::log(silog::error, "Unexpected failure in background thread");
     }
   }
+
+  void *create();
+  void destroy(void *);
 
 protected:
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
@@ -56,12 +56,12 @@ public:
 
   void start() {
     if (m_nth == nullptr)
-      m_nth = sith_create(this, &thread::callback);
+      m_nth = create();
   }
   void stop() {
     m_interrupted = true;
     if (m_nth != nullptr) {
-      sith_destroy(m_nth);
+      destroy(m_nth);
       m_nth = nullptr;
     }
   }
