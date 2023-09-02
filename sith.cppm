@@ -37,10 +37,7 @@ protected:
   virtual void run() = 0;
 
 public:
-  thread(bool should_start = true) {
-    if (should_start)
-      start();
-  }
+  thread() = default;
   virtual ~thread() noexcept { stop(); }
 
   thread(const thread &) = delete;

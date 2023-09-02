@@ -11,14 +11,11 @@ class thread : public sith::thread {
   }
 
 public:
-  thread(const char *msg) : sith::thread{}, msg{msg} {}
+  thread(const char *msg) : sith::thread{}, msg{msg} { start(); }
 };
 
 class dummy_thread : public sith::thread {
   void run() override {}
-
-public:
-  dummy_thread() : sith::thread{false} {}
 };
 
 void run() {
