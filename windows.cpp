@@ -9,7 +9,7 @@ void *sith::thread::create() {
     return 0;
   };
 
-  return CreateThread(nullptr, 0, void_start_wrap, callback,
+  return CreateThread(nullptr, 0, callback, this,
                       0, // CREATE_SUSPENDED / ResumeThread
                       nullptr);
 }
