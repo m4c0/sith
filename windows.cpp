@@ -15,4 +15,5 @@ void *sith::thread::create() {
 }
 void sith::thread::destroy(void *nth) {
   WaitForSingleObject((HANDLE)nth, INFINITE);
+  CloseHandle((HANDLE)nth);
 }
