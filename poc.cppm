@@ -1,3 +1,5 @@
+export module poc;
+
 import silog;
 import sitime;
 import sith;
@@ -24,10 +26,10 @@ void run() {
   thread t2{"Thread 2 running"};
   dummy_thread t3{}; // Should not emit outputs
   silog::log(silog::info, "Threads started");
+  sitime::sleep(1);
 }
 
 int main() {
   run();
-  sitime::sleep(1);
   silog::log(silog::info, "Threads are done");
 }
