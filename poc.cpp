@@ -1,4 +1,5 @@
 import silog;
+import sitime;
 import sith;
 
 class thread : public sith::thread {
@@ -27,5 +28,6 @@ void run() {
 
 int main() {
   run();
+  sitime::sleep(1);
   silog::log(silog::info, "Threads are done");
 }
