@@ -1,3 +1,4 @@
+#pragma leco tool
 export module poc;
 
 import silog;
@@ -29,7 +30,7 @@ void run() {
   sitime::sleep(1);
 }
 
-int main() {
+extern "C" int main() {
   run();
   silog::log(silog::info, "Threads are done");
 }

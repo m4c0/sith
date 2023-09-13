@@ -3,11 +3,11 @@ import silog;
 import traits;
 
 #if __APPLE__
-#pragma ecow add_impl pthread
+#pragma leco add_impl pthread
 #elif __ANDROID__
-#pragma ecow add_impl pthread
+#pragma leco add_impl pthread
 #elif _WIN32
-#pragma ecow add_impl windows
+#pragma leco add_impl windows
 #else
 #error unsupported
 #endif
