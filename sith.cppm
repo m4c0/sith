@@ -43,7 +43,7 @@ public:
   thread(const thread &) = delete;
   thread &operator=(const thread &) = delete;
 
-  thread(thread &&o) : m_nth{o.m_nth}, m_interrupted{o.m_interrupted} {
+  thread(thread &&o) : m_interrupted{o.m_interrupted}, m_nth{o.m_nth} {
     o.m_nth = nullptr;
   }
   thread &operator=(thread &&o) {
