@@ -66,4 +66,14 @@ public:
     }
   }
 };
+
+export class stateless_thread : public thread {
+  void (*m_run)();
+
+protected:
+  void run() override { m_run(); }
+
+public:
+  stateless_thread(void (*r)()) : m_run{r} {}
+};
 } // namespace sith
