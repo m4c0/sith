@@ -32,8 +32,6 @@ export class thread {
   void destroy(void *);
 
 protected:
-  [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
-
   virtual void run() = 0;
 
 public:
@@ -54,6 +52,8 @@ public:
     return *this;
   }
 
+  [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
+
   void start() {
     if (m_nth == nullptr)
       m_nth = create();
@@ -68,12 +68,12 @@ public:
 };
 
 export class stateless_thread : public thread {
-  void (*m_run)();
+  void (*m_run)(thread *);
 
 protected:
-  void run() override { m_run(); }
+  void run() override { m_run(this); }
 
 public:
-  stateless_thread(void (*r)()) : m_run{r} {}
+  stateless_thread(void (*r)(thread *)) : m_run{r} {}
 };
 } // namespace sith

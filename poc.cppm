@@ -21,7 +21,7 @@ public:
 void run() {
   thread t1{"Thread 1 running"};
   thread t2{"Thread 2 running"};
-  sith::stateless_thread t3{[] {}}; // Should not emit outputs
+  sith::stateless_thread t3{[](auto) {}}; // Should not emit outputs
   silog::log(silog::info, "Threads started");
   sitime::sleep(1);
 }
