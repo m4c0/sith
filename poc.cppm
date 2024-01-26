@@ -18,10 +18,30 @@ public:
   thread(const char *msg) : sith::thread{}, msg{msg} { start(); }
 };
 
+struct runner {
+  int id;
+
+  void log(sith::thread *t) {
+    while (!t->interrupted()) {
+      silog::log(silog::info, "Thread %d running", id);
+    }
+  }
+};
+
 void run() {
   thread t1{"Thread 1 running"};
   thread t2{"Thread 2 running"};
+
   sith::stateless_thread t3{[](auto) {}}; // Should not emit outputs
+  t3.start();
+
+  runner r4{4};
+  sith::memfn_thread t4{&r4, &runner::log};
+  t4.start();
+  runner r5{5};
+  sith::memfn_thread t5{&r5, &runner::log};
+  t5.start();
+
   silog::log(silog::info, "Threads started");
   sitime::sleep(1);
 }
