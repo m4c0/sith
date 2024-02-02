@@ -74,6 +74,7 @@ protected:
   void run() override { m_run(this); }
 
 public:
+  stateless_thread() = default;
   stateless_thread(void (*r)(thread *)) : m_run{r} {}
 };
 
@@ -85,6 +86,7 @@ protected:
   void run() override { (m_obj->*m_mfn)(this); }
 
 public:
+  memfn_thread() = default;
   memfn_thread(Tp *o, void (Tp::*m)(thread *)) : m_obj{o}, m_mfn{m} {}
 };
 export template <typename Tp>
