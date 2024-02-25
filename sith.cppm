@@ -1,4 +1,5 @@
 export module sith;
+import no;
 import silog;
 import traits;
 
@@ -65,6 +66,13 @@ public:
       m_nth = nullptr;
     }
   }
+};
+export class run_guard : no::no {
+  thread *m_t;
+
+public:
+  explicit run_guard(thread *t) : m_t{t} { m_t->start(); }
+  ~run_guard() { m_t->stop(); }
 };
 
 export class stateless_thread : public thread {

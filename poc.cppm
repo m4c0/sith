@@ -10,7 +10,7 @@ class thread : public sith::thread {
 
   void run() override {
     while (!interrupted()) {
-      silog::log(silog::info, "%s", msg);
+      silog::log(silog::info, "%s running", msg);
     }
   }
 
@@ -29,10 +29,10 @@ struct runner {
 };
 
 void run() {
-  thread t1{"Thread 1 running"};
+  thread t1{"Thread 1"};
   t1.start();
-  thread t2{"Thread 2 running"};
-  t2.start();
+  thread t2{"Thread 2"};
+  sith::run_guard t2g{&t2};
 
   sith::stateless_thread t3{[](auto) {}}; // Should not emit outputs
   t3.start();
