@@ -15,7 +15,7 @@ class thread : public sith::thread {
   }
 
 public:
-  thread(const char *msg) : sith::thread{}, msg{msg} { start(); }
+  thread(const char *msg) : sith::thread{}, msg{msg} {}
 };
 
 struct runner {
@@ -30,7 +30,9 @@ struct runner {
 
 void run() {
   thread t1{"Thread 1 running"};
+  t1.start();
   thread t2{"Thread 2 running"};
+  t2.start();
 
   sith::stateless_thread t3{[](auto) {}}; // Should not emit outputs
   t3.start();
