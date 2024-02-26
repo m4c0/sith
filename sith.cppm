@@ -14,6 +14,7 @@ import traits;
 #endif
 
 namespace sith {
+export class run_guard;
 export class thread {
   volatile bool m_interrupted{};
   void *m_nth{};
@@ -31,6 +32,20 @@ export class thread {
 
   void *create();
   void destroy(void *);
+
+  friend class run_guard;
+
+  void start() {
+    if (m_nth == nullptr)
+      m_nth = create();
+  }
+  void stop() {
+    m_interrupted = true;
+    if (m_nth != nullptr) {
+      destroy(m_nth);
+      m_nth = nullptr;
+    }
+  }
 
 protected:
   virtual void run() = 0;
@@ -54,18 +69,6 @@ public:
   }
 
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
-
-  void start() {
-    if (m_nth == nullptr)
-      m_nth = create();
-  }
-  void stop() {
-    m_interrupted = true;
-    if (m_nth != nullptr) {
-      destroy(m_nth);
-      m_nth = nullptr;
-    }
-  }
 };
 export class run_guard : no::no {
   thread *m_t;

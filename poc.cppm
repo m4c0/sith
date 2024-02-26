@@ -29,20 +29,24 @@ struct runner {
 };
 
 void run() {
+  // It isn't always desirable to start a thread in its ctor and stopping them
+  // in the dtor might lead to threads still running while child attributes were
+  // destroyed. Therefore, it is better to RAII-ify the execution of a thread.
+  // This is similar to mutex and its locks.
   thread t1{"Thread 1"};
-  t1.start();
+  sith::run_guard t1g{&t1};
   thread t2{"Thread 2"};
   sith::run_guard t2g{&t2};
 
   sith::stateless_thread t3{[](auto) {}}; // Should not emit outputs
-  t3.start();
+  sith::run_guard t3g{&t3};
 
   runner r4{4};
   sith::memfn_thread t4{&r4, &runner::log};
-  t4.start();
+  sith::run_guard t4g{&t4};
   runner r5{5};
   sith::memfn_thread t5{&r5, &runner::log};
-  t5.start();
+  sith::run_guard t5g{&t5};
 
   silog::log(silog::info, "Threads started");
   sitime::sleep(1);
