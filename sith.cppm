@@ -70,12 +70,30 @@ public:
 
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
 };
-export class run_guard : no::no {
-  thread *m_t;
+export class run_guard : no::copy {
+  thread *m_t{};
+
+  void reset() {
+    if (m_t != nullptr)
+      m_t->stop();
+  }
 
 public:
-  explicit run_guard(thread *t) : m_t{t} { m_t->start(); }
-  ~run_guard() { m_t->stop(); }
+  constexpr run_guard() = default;
+
+  explicit run_guard(thread *t) : m_t{t} {
+    if (m_t != nullptr)
+      m_t->start();
+  }
+  ~run_guard() { reset(); }
+
+  run_guard(run_guard &&o) : m_t{o.m_t} { o.m_t = nullptr; }
+  run_guard &operator=(run_guard &&o) {
+    reset();
+    m_t = o.m_t;
+    o.m_t = nullptr;
+    return *this;
+  }
 };
 
 export class stateless_thread : public thread {
