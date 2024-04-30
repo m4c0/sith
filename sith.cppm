@@ -7,6 +7,8 @@ import traits;
 #pragma leco add_impl pthread
 #elif __ANDROID__
 #pragma leco add_impl pthread
+#elif __linux__
+#pragma leco add_impl pthread
 #elif _WIN32
 #pragma leco add_impl windows
 #else
