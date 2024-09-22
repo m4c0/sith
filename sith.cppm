@@ -71,6 +71,8 @@ public:
   }
 
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
+
+  void set_name(const char * n) const;
 };
 export class run_guard : no::copy {
   thread *m_t{};

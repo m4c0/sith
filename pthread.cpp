@@ -21,3 +21,7 @@ void sith::thread::destroy(void *nth) {
   pthread_join(*t, nullptr);
   delete t;
 }
+
+void sith::thread::set_name(const char * n) const {
+  pthread_setname_np(n);
+}
