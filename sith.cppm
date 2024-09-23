@@ -98,6 +98,8 @@ public:
     o.m_t = nullptr;
     return *this;
   }
+
+  [[nodiscard]] constexpr operator bool() const { return m_t != nullptr; }
 };
 
 export class stateless_thread : public thread {
