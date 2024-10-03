@@ -24,5 +24,5 @@ void sith::thread::set_name(const char * n) const {
   mbstowcs_s(&count, wfn, strlen(n), n, _TRUNCATE);
   wfn[count + 1] = 0;
 
-  SetThreadDescription((HANDLE)nth, wfn);
+  SetThreadDescription((HANDLE)m_nth, wfn);
 }
