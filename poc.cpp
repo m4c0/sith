@@ -1,6 +1,4 @@
 #pragma leco tool
-export module poc;
-
 import silog;
 import sitime;
 import sith;
@@ -52,7 +50,7 @@ void run() {
   sitime::sleep(1);
 }
 
-extern "C" int main() {
+int main() {
   run();
   silog::log(silog::info, "Threads are done");
 }
