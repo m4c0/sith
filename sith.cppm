@@ -22,7 +22,7 @@ export class run_guard;
 // (current, source and target), which is too prone to dead locks to worth
 // the risk
 export class thread : no::no {
-  volatile bool m_interrupted{};
+  _Atomic(bool) m_interrupted = false;
   void *m_nth{};
 
   static void callback(void *self) {
