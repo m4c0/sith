@@ -17,7 +17,11 @@ import traits;
 
 namespace sith {
 export class run_guard;
-export class thread {
+
+// Inheritly unsafe to "move". We would need to "sync" up to three threads
+// (current, source and target), which is too prone to dead locks to worth
+// the risk
+export class thread : no::no {
   volatile bool m_interrupted{};
   void *m_nth{};
 
@@ -55,20 +59,6 @@ protected:
 public:
   thread() = default;
   virtual ~thread() noexcept { stop(); }
-
-  thread(const thread &) = delete;
-  thread &operator=(const thread &) = delete;
-
-  thread(thread &&o) : m_interrupted{o.m_interrupted}, m_nth{o.m_nth} {
-    o.m_nth = nullptr;
-  }
-  thread &operator=(thread &&o) {
-    stop();
-    m_nth = o.m_nth;
-    m_interrupted = o.m_interrupted;
-    o.m_nth = nullptr;
-    return *this;
-  }
 
   [[nodiscard]] bool interrupted() const noexcept { return m_interrupted; }
 
